@@ -8,6 +8,7 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using DiceBox.Resources;
+using System.ComponentModel;
 
 namespace DiceBox
 {
@@ -17,25 +18,28 @@ namespace DiceBox
         public MainPage()
         {
             InitializeComponent();
+        }
+    }
 
-            // Sample code to localize the ApplicationBar
-            //BuildLocalizedApplicationBar();
+    public class data : INotifyPropertyChanged
+    {
+        public IEnumerable <string> diceSizes { get; private set; }
+
+        public data()
+        {
+            diceSizes = "D2 D3 D4 D5 D6 D8 D10 D20 D100".Split();
         }
 
-        // Sample code for building a localized ApplicationBar
-        //private void BuildLocalizedApplicationBar()
-        //{
-        //    // Set the page's ApplicationBar to a new instance of ApplicationBar.
-        //    ApplicationBar = new ApplicationBar();
+        private void InvokePropertyChanged(string propertyName)
+        {
+            var handler = PropertyChanged;
+            if (null != handler)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
 
-        //    // Create a new button and set the text value to the localized string from AppResources.
-        //    ApplicationBarIconButton appBarButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.add.rest.png", UriKind.Relative));
-        //    appBarButton.Text = AppResources.AppBarButtonText;
-        //    ApplicationBar.Buttons.Add(appBarButton);
-
-        //    // Create a new menu item with the localized string from AppResources.
-        //    ApplicationBarMenuItem appBarMenuItem = new ApplicationBarMenuItem(AppResources.AppBarMenuItemText);
-        //    ApplicationBar.MenuItems.Add(appBarMenuItem);
-        //}
+        public event PropertyChangedEventHandler PropertyChanged;
     }
+
 }
